@@ -10,8 +10,8 @@ const ImageGalleryDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
   background-color: var(--color-nature-300);
-  width: 95%;
-  padding: 1rem;
+  width: 100%;
+  padding: 0.5rem;
   border-bottom-left-radius: var(--border-radius-lg);
   border-bottom-right-radius: var(--border-radius-lg);
   justify-content: center;

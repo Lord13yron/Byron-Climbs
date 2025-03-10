@@ -13,7 +13,7 @@ const StyledModal = styled.div`
   background-color: var(--color-nature-0);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
-  padding: 2rem 2rem;
+  padding: 1rem 1rem;
   transition: all 0.5s;
   overflow-y: scroll;
 `;
@@ -27,6 +27,7 @@ const Overlay = styled.div`
   backdrop-filter: blur(4px);
   z-index: 1000;
   transition: all 0.5s;
+  overflow-y: scroll;
 `;
 
 const Button = styled.button`

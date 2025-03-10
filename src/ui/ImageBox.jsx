@@ -24,7 +24,10 @@ function ImageBox({ image, setSelected }) {
 
   function handleSelect() {
     if (!isSelected) {
-      setSelected((prev) => [...prev, { id: image.id, url: image.url }]);
+      setSelected((prev) => [
+        ...prev,
+        { id: image.id, url: image.url, name: image.name },
+      ]);
       setIsSelected(true);
     } else {
       setSelected((prev) => prev.filter((id) => id !== image.id));

@@ -16,6 +16,11 @@ const Container = styled.div`
   height: 300px;
   padding: 0.5rem;
   position: relative;
+
+  @media (max-width: 400px) {
+    width: 100%;
+    min-width: 100%;
+  }
 `;
 
 const DeleteButton = styled.button`
@@ -64,13 +69,13 @@ function ImageContainer({ media, type, mediaType = "image" }) {
           }
           onClick={() =>
             type === "climb" && mediaType === "image"
-              ? deleteImageFromClimb(media.id)
+              ? deleteImageFromClimb(media)
               : type === "post" && mediaType === "image"
-              ? deleteImageFromPost(media.id)
+              ? deleteImageFromPost(media)
               : type === "climb" && mediaType === "video"
-              ? deleteVideoFromClimb(media.id)
+              ? deleteVideoFromClimb(media)
               : type === "post" && mediaType === "video"
-              ? deleteVideoFromPost(media.id)
+              ? deleteVideoFromPost(media)
               : null
           }
         >

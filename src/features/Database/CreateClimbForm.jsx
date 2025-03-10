@@ -157,7 +157,7 @@ function CreateClimbForm({ climbToUpdate = {}, onCloseModal }) {
         </>
       )}
       <ButtonGroup>
-        <Button color="primary">
+        <Button color="primary" style={{ marginRight: "0.5rem" }}>
           {isEditSession ? "Edit Problem" : "Create Problem"}
         </Button>
       </ButtonGroup>

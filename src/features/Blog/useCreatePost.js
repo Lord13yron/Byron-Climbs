@@ -12,6 +12,9 @@ export function useCreatePost() {
       queryClient.invalidateQueries({
         queryKey: ["posts"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["images"],
+      });
     },
     onError: (err) => toast.error(err.message),
   });

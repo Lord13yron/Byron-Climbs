@@ -1,4 +1,5 @@
 import { PAGE_SIZE } from "../utils/constants";
+import { addImagesToPost, addImageToPost } from "./apiImages";
 import supabase from "./supaBase";
 
 export async function getPosts({ pageParam }) {
@@ -24,11 +25,29 @@ export async function getPosts({ pageParam }) {
 }
 
 export async function createPost(post) {
-  const { error } = await supabase.from("posts").insert(post).select();
+  const { data, error } = await supabase
+    .from("posts")
+    .insert(post.data)
+    .select();
 
   if (error) {
     console.error(error);
     throw new Error("Post could not be created");
+  }
+
+  const images = Array.from(post.images);
+  const postId = data[0].id;
+
+  if (post.images && post.addImagesFrom === "device") {
+    // const images = Array.from(post.images);
+    // const postId = data[0].id;
+    // images?.map((image) => addImageToPost(postId, image));
+    await Promise.all(images.map((image) => addImageToPost(postId, image)));
+  }
+
+  if (post.images && post.addImagesFrom === "db") {
+    //do something
+    await addImagesToPost(postId, images);
   }
 }
 

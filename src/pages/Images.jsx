@@ -7,7 +7,6 @@ import { Helmet } from "react-helmet-async";
 function Images() {
   const { isLoading, data: images } = useImages();
   if (isLoading) return <Spinner />;
-  console.log(images);
   return (
     <>
       <Helmet>

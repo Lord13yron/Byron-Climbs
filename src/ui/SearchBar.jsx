@@ -4,10 +4,10 @@ import styled from "styled-components";
 const SearchInput = styled.input`
   margin-right: 0.5rem;
   height: 100%;
-  width: 150px;
+  width: 200px;
   border-radius: var(--border-radius-sm);
   font-size: 16px;
-  padding: 0.5rem;
+  padding: 0.25rem;
 `;
 
 function SearchBar({ searchBy, setSearchBy }) {

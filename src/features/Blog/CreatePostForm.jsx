@@ -8,12 +8,16 @@ import { useCreatePost } from "./useCreatePost";
 import ButtonGroup from "../../ui/ButtonGroup";
 import { useUpdatePost } from "./useUpdatePost";
 import FormTitle from "../../ui/FormTitle";
+import CreatePostFormImages from "./CreatePostFormImages";
+import { useState } from "react";
+import Spinner from "../../ui/Spinner";
 
 function CreatePostForm({ postToUpdate = {}, onCloseModal }) {
+  const [formLoading, setFormLoading] = useState(false);
   const { isCreating, createPost } = useCreatePost();
   const { isUpdating, updatePost } = useUpdatePost();
-
-  const isLoading = isCreating || isUpdating;
+  const [images, setImages] = useState([]);
+  const [addImagesFrom, setAddImagesFrom] = useState("");
 
   const { id: editId, ...editValues } = postToUpdate;
   const isEditSession = Boolean(editId);
@@ -21,9 +25,10 @@ function CreatePostForm({ postToUpdate = {}, onCloseModal }) {
   const { register, handleSubmit, formState, reset } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });
-  const { errors } = formState;
+  const { errors, isSubmitting } = formState;
 
   function onSubmit(data) {
+    setFormLoading(true);
     if (isEditSession)
       updatePost(
         { id: editId, newPost: { ...data } },
@@ -31,21 +36,28 @@ function CreatePostForm({ postToUpdate = {}, onCloseModal }) {
           onSuccess: () => {
             reset();
             onCloseModal?.();
+            setFormLoading(false);
           },
         }
       );
     else
-      createPost(data, {
-        onSuccess: () => {
-          reset();
-          onCloseModal?.();
-        },
-      });
+      createPost(
+        { data, images, addImagesFrom },
+        {
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+            setFormLoading(false);
+          },
+        }
+      );
   }
 
   function onError(errors) {
     console.log(errors);
   }
+
+  const isLoading = isCreating || isUpdating || isSubmitting || formLoading;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -67,8 +79,16 @@ function CreatePostForm({ postToUpdate = {}, onCloseModal }) {
         />
       </FormRow>
 
+      {!isEditSession && (
+        <CreatePostFormImages
+          setImages={setImages}
+          setAddImagesFrom={setAddImagesFrom}
+          addImagesFrom={addImagesFrom}
+        />
+      )}
+
       <ButtonGroup>
-        <Button color="primary">
+        <Button color="primary" disabled={isLoading}>
           {isEditSession ? "Edit Post" : "Create Post"}
         </Button>
       </ButtonGroup>

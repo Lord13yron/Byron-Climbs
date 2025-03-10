@@ -83,7 +83,7 @@ export async function addImageToPost(postId, image) {
   // Add image to database
   const { data, error } = await supabase
     .from("images")
-    .insert([{ postId: postId, url: url }])
+    .insert([{ postId: postId, url: url, name: image.name.split(".")[0] }])
     .select();
 
   if (error) {
@@ -99,7 +99,7 @@ export async function addImagesToPost(postId, images) {
   const promises = images.map(async (image) => {
     const { data, error } = await supabase
       .from("images")
-      .insert([{ postId: postId, url: image.url }])
+      .insert([{ postId: postId, url: image.url, name: image.name }])
       .select();
 
     if (error) {
@@ -126,8 +126,48 @@ export async function getImageByPost(postId) {
   return images;
 }
 
-export async function deleteImageByPost(id) {
-  const { error } = await supabase.from("images").delete().eq("id", id);
+// export async function deleteImageByPost(id) {
+//   const { error } = await supabase.from("images").delete().eq("id", id);
+
+//   if (error) {
+//     console.error(error);
+//     throw new Error("Image could not be deleted");
+//   }
+// }
+
+// export async function deleteImageByClimb(id) {
+//   const { error } = await supabase.from("images").delete().eq("id", id);
+
+//   if (error) {
+//     console.error(error);
+//     throw new Error("Image could not be deleted");
+//   }
+// }
+export async function deleteImageByPost(media) {
+  const { data: existingImages, error: searchError } = await supabase
+    .from("images")
+    .select("*")
+    .eq("name", media.name)
+    .not("climbId", "is", null);
+
+  if (searchError) {
+    console.error(searchError);
+    throw new Error("Error checking for existing images");
+  }
+  if (existingImages.length < 1) {
+    const imagePath = media.url.split("/").pop();
+    console.log("imagePath", imagePath);
+    const { error } = await supabase.storage
+      .from("climb-images")
+      .remove([imagePath]);
+
+    if (error) {
+      console.error("Error deleting image:", error);
+    } else {
+      console.log("Image deleted successfully!");
+    }
+  }
+  const { error } = await supabase.from("images").delete().eq("id", media.id);
 
   if (error) {
     console.error(error);
@@ -135,8 +175,32 @@ export async function deleteImageByPost(id) {
   }
 }
 
-export async function deleteImageByClimb(id) {
-  const { error } = await supabase.from("images").delete().eq("id", id);
+export async function deleteImageByClimb(media) {
+  const { data: existingImages, error: searchError } = await supabase
+    .from("images")
+    .select("*")
+    .eq("name", media.name)
+    .not("postId", "is", null);
+
+  if (searchError) {
+    console.error(searchError);
+    throw new Error("Error checking for existing images");
+  }
+  if (existingImages.length < 1) {
+    const imagePath = media.url.split("/").pop();
+    console.log("imagePath", imagePath);
+    const { error } = await supabase.storage
+      .from("climb-images")
+      .remove([imagePath]);
+
+    if (error) {
+      console.error("Error deleting image:", error);
+    } else {
+      console.log("Image deleted successfully!");
+    }
+  }
+
+  const { error } = await supabase.from("images").delete().eq("id", media.id);
 
   if (error) {
     console.error(error);

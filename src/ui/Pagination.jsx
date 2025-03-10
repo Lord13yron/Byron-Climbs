@@ -20,6 +20,10 @@ const StyledPagination = styled.div`
   width: 430px;
   border: 1px solid var(--color-nature-0);
   background-color: var(--color-nature-50);
+
+  @media (max-width: 430px) {
+    width: 100%;
+  }
 `;
 
 function Pagination({ searchedClimbs, pageSize }) {

@@ -10,7 +10,7 @@ const FilterButton = styled.button`
   ${({ $active }) =>
     $active &&
     `
-    background-color: var(--color-nature-700);
+    background-color: var(--color-nature-500);
     color: var(--color-nature-0);
     
     `};

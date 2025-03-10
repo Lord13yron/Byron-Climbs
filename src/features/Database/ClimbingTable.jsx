@@ -50,7 +50,14 @@ const Span = styled.span`
 `;
 
 const Select = styled.select`
-  margin-bottom: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+`;
+
+const Row = styled.div`
+  display: flex;
+  gap: 0.25rem;
+  justify-content: space-between;
 `;
 
 function ClimbingTable() {
@@ -99,16 +106,23 @@ function ClimbingTable() {
             { value: "sends", label: "Sends" },
           ]}
         />
-        <SearchBar searchBy={searchBy} setSearchBy={setSearchBy} />
       </TableHeader>
-      <Span>entries per page</Span>
-      <Select onChange={(e) => setPageSize(e.target.value)} value={pageSize}>
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-      </Select>
-      <TableRow>
+      <Row>
+        <div>
+          <Span>entries per page</Span>
+          <Select
+            onChange={(e) => setPageSize(e.target.value)}
+            value={pageSize}
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </Select>
+        </div>
+        <SearchBar searchBy={searchBy} setSearchBy={setSearchBy} />
+      </Row>
+      <TableRow style={{ marginTop: "0.5rem" }}>
         <P>Name</P>
         <P>Grade</P>
         <P>City</P>
