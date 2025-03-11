@@ -10,7 +10,6 @@ import { useUpdatePost } from "./useUpdatePost";
 import FormTitle from "../../ui/FormTitle";
 import CreatePostFormImages from "./CreatePostFormImages";
 import { useState } from "react";
-import Spinner from "../../ui/Spinner";
 
 function CreatePostForm({ postToUpdate = {}, onCloseModal }) {
   const [formLoading, setFormLoading] = useState(false);

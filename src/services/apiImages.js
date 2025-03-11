@@ -1,20 +1,31 @@
+import { PAGE_SIZE } from "../utils/constants";
 import supabase, { supabaseUrl } from "./supaBase";
 
-export async function getImages() {
-  let { data: images, error } = await supabase.from("images").select("*");
+export async function getImages({ pageParam }) {
+  let query = supabase.from("images").select("*");
+
+  let { data: images, error } = await query;
 
   if (error) {
     console.error(error);
     throw new Error("Images not found");
   }
 
-  const uniqueImages = images.reduce((acc, current) => {
+  let uniqueImages = images.reduce((acc, current) => {
     if (!acc.some((obj) => obj.name === current.name)) {
       acc.push(current);
     }
     return acc;
   }, []);
 
+  if (pageParam) {
+    const from = (pageParam - 1) * PAGE_SIZE;
+    // const to = from + PAGE_SIZE - 1;
+    const to = from + PAGE_SIZE;
+    uniqueImages = uniqueImages.slice(from, to);
+    // query = query.range(from, to);
+  }
+  console.log("unique", uniqueImages);
   return uniqueImages;
 }
 

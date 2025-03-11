@@ -5,13 +5,7 @@ import Spinner from "../ui/Spinner";
 import { Helmet } from "react-helmet-async";
 
 function Images() {
-  const {
-    isLoading,
-    data: images,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-  } = useImages();
+  const { isLoading, data: images } = useImages();
   if (isLoading) return <Spinner />;
   return (
     <>
@@ -19,13 +13,7 @@ function Images() {
         <title>Climbing Images</title>
       </Helmet>
       <PageTitle title="Image Gallery" />
-      <ImageGallery
-        medias={images}
-        paginate="true"
-        isFetchingNextPage={isFetchingNextPage}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
-      />
+      <ImageGallery medias={images} />
     </>
   );
 }
